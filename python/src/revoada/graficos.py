@@ -194,6 +194,12 @@ def resumo_web(det: dict, exp: dict | None) -> None:
         "classesCoco": {"n": det["conjuntos"]["teste"]["frames"],
                         "ave": [[k, v / total] for k, v in sorted(atrib.items(), key=lambda kv: -kv[1])[:6]]},
         "deteccao": linhas_det,
+        # recorte usado pelo card da página inicial (yucavalcante.com)
+        "vitrine": [
+            {"classe": "não detectada" if k == "não detectado" else k, "n": v, "fracao": round(v / total, 4)}
+            for k, v in sorted(atrib.items(), key=lambda kv: -kv[1])
+            if k in ("não detectado", "kite", "airplane", "bird")
+        ],
         "latencias": [],
         "politicas": {},
         "episodios": 0,

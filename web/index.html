@@ -15,6 +15,7 @@
   <header class="top">
     <a href="https://yucavalcante.com/">Yury Cavalcante</a>
     <nav>
+      <a href="#artigo">Artigo</a>
       <a href="#resultados">Resultados</a>
       <a href="https://github.com/YUCAVALCANTE/agente-revoada#readme">Relatório</a>
       <a href="https://github.com/YUCAVALCANTE/agente-revoada">Código</a>
@@ -25,6 +26,7 @@
     <span class="kicker">IA sem mágica · visão computacional</span>
     <h1>Como uma IA enxerga um jogo e decide onde clicar</h1>
     <p>O agente abaixo não lê o código do jogo: ele recebe só os pixels da tela, roda um detector de objetos (YOLOv8) num Web Worker do seu navegador e escolhe onde clicar. <b>Revoada</b> é um jogo original: acerte as aves de papel, não estoure os balões.</p>
+    <div class="acoes"><a class="btn" href="https://medium.com/@yucavalcante/como-uma-ia-enxerga-um-jogo-e-decide-onde-clicar-d70ac633f756">Ler o artigo no Medium</a><a class="btn" href="#artigo">Do artigo ao experimento</a></div>
   </section>
 
   <section class="palco" aria-label="Jogo e agente">
@@ -76,6 +78,33 @@
     </div>
   </section>
 
+  <section id="artigo" aria-labelledby="artigo-titulo">
+    <div class="sec-head">
+      <h2 id="artigo-titulo">Do artigo ao experimento</h2>
+      <p>No artigo <a href="https://medium.com/@yucavalcante/como-uma-ia-enxerga-um-jogo-e-decide-onde-clicar-d70ac633f756">"Como uma IA enxerga um jogo e decide onde clicar"</a>, da série <i>IA sem mágica</i>, eu descrevo um exercício da pós-graduação: uma IA que acerta alvos de um jogo de tiro sem aprender a jogar, só ligando um detector de objetos a regras de decisão. Esta página transforma cada ponto do texto num experimento medido.</p>
+    </div>
+    <div class="ponte">
+      <article class="card passo"><span class="num">1</span><div><h3>O detector chamava os patos de "kite"</h3>
+        <p><b>No artigo:</b> o modelo pré-treinado não tinha a classe certa, e a "pipa" virou o sinal de onde mirar.</p>
+        <p><b>Aqui:</b> o YOLOv8n do COCO chama 40% das aves de papel de <i>kite</i> e só 1 em 2.462 de <i>bird</i>; também chama balões e nuvens de <i>kite</i>. Um detector treinado no próprio jogo resolve isso.</p></div></article>
+      <article class="card passo"><span class="num">2</span><div><h3>Limiar de confiança de 40%</h3>
+        <p><b>No artigo:</b> o exercício descartava detecções abaixo de 40%, e o texto lembra que esse valor não é universal.</p>
+        <p><b>Aqui:</b> o limiar de cada detector é o de maior F1 numa validação separada, e o teste mostra precisão e recall em cada limiar. Use a barra "Limiar de confiança" para ver o efeito ao vivo.</p></div></article>
+      <article class="card passo"><span class="num">3</span><div><h3>Clicar no centro da caixa de maior score</h3>
+        <p><b>No artigo:</b> a regra escolhe o alvo mais confiante, não o mais fácil de acertar, e ignora velocidade e direção.</p>
+        <p><b>Aqui:</b> essa é a política "Maior confiança", comparada com "Mais perto da mira" e com "Antecipação", que rastreia cada alvo entre quadros e estima sua velocidade.</p></div></article>
+      <article class="card passo"><span class="num">4</span><div><h3>Acertar onde o pato estava</h3>
+        <p><b>No artigo:</b> a 200 px/s, 100 ms de latência já deslocam o alvo 20 px.</p>
+        <p><b>Aqui:</b> a latência vira um parâmetro controlado (0 a 300 ms), em episódios pareados, e o gráfico abaixo mostra quanto cada política perde. Arraste "Latência extra simulada" e veja o agente atirar no lugar onde a ave estava.</p></div></article>
+      <article class="card passo"><span class="num">5</span><div><h3>Web Worker, createImageBitmap e OffscreenCanvas</h3>
+        <p><b>No artigo:</b> tirar a inferência da thread principal evita travar a interface, mas não a deixa mais rápida.</p>
+        <p><b>Aqui:</b> o quadro vai para o Worker como <code>ImageBitmap</code> transferido, o pré-processamento roda num <code>OffscreenCanvas</code> e a rede roda com onnxruntime-web (WebGPU ou WASM). O painel mostra o tempo de inferência real no seu aparelho.</p></div></article>
+      <article class="card passo"><span class="num">6</span><div><h3>Isso não é aprender a jogar</h3>
+        <p><b>No artigo:</b> percepção treinada + regras programadas não é aprendizado por reforço; o sistema não melhora com os próprios erros.</p>
+        <p><b>Aqui também não:</b> as três políticas são regras fixas. O que muda é a qualidade da percepção e da regra, e isso dá para medir.</p></div></article>
+    </div>
+  </section>
+
   <section id="resultados">
     <div class="sec-head">
       <h2>O que os números mostram</h2>
@@ -84,7 +113,7 @@
     <div class="grade" id="graficos"><p>Carregando resultados…</p></div>
   </section>
 
-  <footer>Revoada é um jogo original criado para este estudo, inspirado no exercício de detecção de alvos de um jogo de tiro ao alvo feito na pós-graduação. Código sob licença MIT · <a href="https://github.com/YUCAVALCANTE/agente-revoada">GitHub</a> · <a href="dataset.html">gerador de quadros rotulados</a></footer>
+  <footer>Revoada é um jogo original criado para este estudo, inspirado no exercício de detecção de alvos de um jogo de tiro ao alvo feito na pós-graduação e descrito <a href="https://medium.com/@yucavalcante/como-uma-ia-enxerga-um-jogo-e-decide-onde-clicar-d70ac633f756">no artigo</a>. Código sob licença MIT · <a href="https://github.com/YUCAVALCANTE/agente-revoada">GitHub</a> · <a href="dataset.html">gerador de quadros rotulados</a></footer>
 </div>
 <script type="module" src="src/app.js"></script>
 <script type="module" src="src/graficos.js"></script>
