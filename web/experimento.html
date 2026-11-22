@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Revoada · experimento de políticas (headless)</title>
+</head>
+<body>
+<p>Página usada pelo script <code>scripts/experimento.mjs</code>: roda episódios em relógio virtual com o detector real (ONNX no Web Worker).</p>
+<canvas id="tela" width="640" height="480"></canvas>
+<pre id="log"></pre>
+<script type="module">
+import { desenharMundo } from './src/jogo/render.js';
+import { rodarEpisodio, detectorOraculo } from './src/agente/episodio.js';
+import { criarDetector, MODELOS } from './src/agente/detector.js';
+
+const tela = document.getElementById('tela');
+const ctx = tela.getContext('2d');
+const detector = criarDetector();
+let carregado = null;
+
+window.rodarEpisodioNoNavegador = async (op) => {
+  let detectar;
+  let msInferencia = [];
+  if (op.detector === 'oraculo') {
+    detectar = detectorOraculo();
+  } else {
+    if (carregado !== op.detector) {
+      window.provedor = (await detector.carregar(op.detector, ['wasm'])).provedor;
+      carregado = op.detector;
+    }
+    detectar = async (mundo) => {
+      desenharMundo(ctx, mundo);
+      const r = await detector.detectar(tela, Math.min(op.limiar, 0.05));
+      msInferencia.push(r.ms.inferencia);
+      return r.deteccoes;
+    };
+  }
+  const r = await rodarEpisodio({ ...op, detectar, classesAlvo: op.classesAlvo || MODELOS[op.detector]?.classesAlvo || ['ave'] });
+  msInferencia.sort((a, b) => a - b);
+  r.msInferenciaMediana = msInferencia.length ? msInferencia[Math.floor(msInferencia.length / 2)] : 0;
+  return r;
+};
+window.pronto = true;
+</script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Revoada · como uma IA enxerga um jogo e decide onde clicar</title>
+<meta name="description" content="Um agente que só vê pixels: detecta os alvos de um jogo original com YOLOv8 no navegador (Web Worker + onnxruntime-web) e decide onde clicar. Compare detectores, políticas de mira e o efeito da latência.">
+<meta property="og:title" content="Revoada · como uma IA enxerga um jogo e decide onde clicar">
+<meta property="og:description" content="Detector COCO × detector treinado no jogo, e três políticas de mira sob latência. Tudo rodando no seu navegador.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23007aff'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='white' stroke-width='2.5'/%3E%3Cpath d='M16 4v6M16 22v6M4 16h6M22 16h6' stroke='white' stroke-width='2.5'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="estilo.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <a href="https://yucavalcante.com/">Yury Cavalcante</a>
+    <nav>
+      <a href="#resultados">Resultados</a>
+      <a href="https://github.com/YUCAVALCANTE/agente-revoada#readme">Relatório</a>
+      <a href="https://github.com/YUCAVALCANTE/agente-revoada">Código</a>
+    </nav>
+  </header>
+
+  <section class="intro">
+    <span class="kicker">IA sem mágica · visão computacional</span>
+    <h1>Como uma IA enxerga um jogo e decide onde clicar</h1>
+    <p>O agente abaixo não lê o código do jogo: ele recebe só os pixels da tela, roda um detector de objetos (YOLOv8) num Web Worker do seu navegador e escolhe onde clicar. <b>Revoada</b> é um jogo original: acerte as aves de papel, não estoure os balões.</p>
+  </section>
+
+  <section class="palco" aria-label="Jogo e agente">
+    <div class="card">
+      <div class="tela">
+        <canvas id="jogo" width="640" height="480" aria-label="Tela do jogo Revoada"></canvas>
+        <canvas id="sobreposicao" width="640" height="480" aria-hidden="true"></canvas>
+        <span class="estado-modelo" id="estadoModelo">Carregando modelo…</span>
+      </div>
+      <div class="legenda">
+        <span><i style="background:#0a84ff"></i>detecção de alvo (no quadro em que foi vista)</span>
+        <span><i style="background:#8e8e93"></i>outra detecção</span>
+        <span><i style="border:1.5px dashed #fff;background:#3a3a3c"></i>caixa real</span>
+        <span><i style="background:#30d158"></i>acerto · <i style="background:#ff453a;margin-left:4px"></i>erro</span>
+      </div>
+      <div class="painel" aria-live="polite">
+        <div class="stat"><b id="vTiros">0</b><span>tiros</span></div>
+        <div class="stat"><b id="vAcertos">0</b><span>aves abatidas</span></div>
+        <div class="stat"><b id="vBaloes">0</b><span>balões estourados</span></div>
+        <div class="stat"><b id="vPrecisao">–</b><span>precisão (acertos ÷ tiros)</span></div>
+        <div class="stat"><b id="vInferencia">–</b><span>inferência no Worker (mediana)</span></div>
+        <div class="stat"><b id="vAtraso">–</b><span>da captura ao tiro (mediana)</span></div>
+        <div class="stat"><b id="vFps">–</b><span>quadros analisados por segundo</span></div>
+        <div class="stat"><b id="vProvedor">–</b><span>onde a rede roda</span></div>
+      </div>
+    </div>
+
+    <div class="card controles">
+      <div class="grupo"><span>Quem joga</span>
+        <div class="seg" data-campo="modo"><button data-v="agente" aria-pressed="true">Agente</button><button data-v="humano" aria-pressed="false">Você</button></div>
+      </div>
+      <div class="grupo"><span>Detector</span>
+        <div class="seg" data-campo="detector"><button data-v="proprio" aria-pressed="true">Treinado no jogo</button><button data-v="coco" aria-pressed="false">COCO (bird/kite)</button></div>
+      </div>
+      <div class="grupo"><span>Política de decisão</span>
+        <div class="seg" data-campo="politica"><button data-v="maiorConfianca" aria-pressed="false">Maior confiança</button><button data-v="maisPerto" aria-pressed="false">Mais perto</button><button data-v="antecipacao" aria-pressed="true">Antecipação</button></div>
+      </div>
+      <label class="grupo faixa"><span>Limiar de confiança</span><output id="oLimiar"></output>
+        <input id="limiar" type="range" min="0.05" max="0.95" step="0.05"></label>
+      <label class="grupo faixa"><span>Latência extra simulada</span><output id="oLatencia"></output>
+        <input id="latencia" type="range" min="0" max="300" step="10" value="0"></label>
+      <label class="chave">Mostrar detecções <input id="mostrarDet" type="checkbox" checked></label>
+      <label class="chave">Mostrar caixas reais <input id="mostrarReais" type="checkbox"></label>
+      <div class="acoes">
+        <button class="btn primary" id="pausar">Pausar</button>
+        <button class="btn" id="reiniciar">Recomeçar</button>
+      </div>
+      <p class="nota" id="notaDetector"></p>
+    </div>
+  </section>
+
+  <section id="resultados">
+    <div class="sec-head">
+      <h2>O que os números mostram</h2>
+      <p>Medido fora desta página: 1.500 quadros de teste rotulados pelo próprio jogo e episódios pareados em relógio virtual, com a mesma rede ONNX rodando no Chromium. Protocolo completo no <a href="https://github.com/YUCAVALCANTE/agente-revoada#readme">relatório</a>.</p>
+    </div>
+    <div class="grade" id="graficos"><p>Carregando resultados…</p></div>
+  </section>
+
+  <footer>Revoada é um jogo original criado para este estudo, inspirado no exercício de detecção de alvos de um jogo de tiro ao alvo feito na pós-graduação. Código sob licença MIT · <a href="https://github.com/YUCAVALCANTE/agente-revoada">GitHub</a> · <a href="dataset.html">gerador de quadros rotulados</a></footer>
+</div>
+<script type="module" src="src/app.js"></script>
+<script type="module" src="src/graficos.js"></script>
+</body>
+</html>

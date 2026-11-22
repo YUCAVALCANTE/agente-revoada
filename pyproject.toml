@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "revoada"
+version = "1.0.0"
+description = "Agente que só vê pixels: detecção de alvos e políticas de mira num jogo original de tiro ao alvo."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+dependencies = ["numpy>=1.26"]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.5"]
+ml = [
+  "ultralytics>=8.3",
+  "onnx>=1.16",
+  "onnxruntime>=1.18",
+  "onnxslim",
+  "playwright>=1.45",
+  "matplotlib>=3.8",
+  "pandas>=2.1",
+]
+
+[tool.setuptools.packages.find]
+where = ["python/src"]
+
+[tool.pytest.ini_options]
+testpaths = ["python/tests"]
+pythonpath = ["python/src"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

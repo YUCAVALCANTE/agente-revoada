@@ -1,0 +1,10 @@
+{
+  "name": "agente-revoada",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test \"web/test/*.test.js\"",
+    "servir": "node scripts/servidor.mjs 8765",
+    "oraculo": "node scripts/simular_oraculo.mjs"
+  }
+}
