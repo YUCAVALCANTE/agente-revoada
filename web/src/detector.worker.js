@@ -13,17 +13,22 @@ let config = null;
 let tela = null;
 let ctx = null;
 
+let ultimaCarga = 0;
+
 async function carregar({ url, nomes, lado, provedores }) {
-  config = { nomes, lado };
-  tela = new OffscreenCanvas(lado, lado);
-  ctx = tela.getContext('2d', { willReadFrequently: true });
-  let ultimoErro;
+  const minha = ++ultimaCarga;
+  let ultimoErro = new Error('nenhum provedor de execução disponível');
   for (const p of provedores) {
     try {
       if (p === 'webgpu' && !(await temWebGpu())) continue;
       // alguns navegadores expõem WebGPU mas nunca terminam de criar a sessão: limite de tempo
       const s = await comPrazo(criarSessao(url, p, lado), p === 'webgpu' ? 10000 : 60000);
+      if (minha !== ultimaCarga) throw new Error('carga substituída por outra mais recente');
+      // troca sessão e configuração juntas, para nunca misturar modelo e classes
       sessao = s;
+      config = { nomes, lado };
+      tela = new OffscreenCanvas(lado, lado);
+      ctx = tela.getContext('2d', { willReadFrequently: true });
       return p;
     } catch (e) {
       ultimoErro = e;

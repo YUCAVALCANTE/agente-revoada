@@ -12,7 +12,7 @@ PESOS = RAIZ / "dados" / "pesos"
 MODELOS_WEB = RAIZ / "web" / "modelos"
 
 
-def treinar(epocas: int, imgsz: int, lote: int, dispositivo: str) -> Path:
+def treinar(epocas: int, imgsz: int, lote: int, dispositivo: str, workers: int = 2) -> Path:
     from ultralytics import YOLO
 
     PESOS.mkdir(parents=True, exist_ok=True)
@@ -23,7 +23,7 @@ def treinar(epocas: int, imgsz: int, lote: int, dispositivo: str) -> Path:
         epochs=epocas,
         batch=lote,
         device=dispositivo,
-        workers=4,
+        workers=workers,
         seed=0,
         deterministic=True,
         project=str(RAIZ / "dados" / "treinos"),
@@ -52,9 +52,12 @@ def main() -> None:
     ap.add_argument("--imgsz", type=int, default=416)
     ap.add_argument("--lote", type=int, default=16)
     ap.add_argument("--dispositivo", default="cpu", help='"cpu" ou índice da GPU, ex.: "0"')
+    ap.add_argument("--workers", type=int, default=2)
     ap.add_argument("--so-exportar", action="store_true")
     args = ap.parse_args()
-    pesos = PESOS / "revoada_yolov8n.pt" if args.so_exportar else treinar(args.epocas, args.imgsz, args.lote, args.dispositivo)
+    pesos = PESOS / "revoada_yolov8n.pt" if args.so_exportar else treinar(
+        args.epocas, args.imgsz, args.lote, args.dispositivo, args.workers
+    )
     exportar(pesos, MODELOS_WEB / "revoada_yolov8n.onnx", args.imgsz)
     exportar(PESOS / "yolov8n.pt", MODELOS_WEB / "coco_yolov8n.onnx", args.imgsz)
 

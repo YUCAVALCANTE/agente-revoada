@@ -47,16 +47,27 @@ function reiniciar() {
 
 // ---------- detector ----------
 const detector = criarDetector();
-async function carregarDetector() {
+let pedidoCarga = 0;
+async function carregarDetector(tentouAlternativo = false) {
+  const meu = ++pedidoCarga;
   detectorPronto = false;
   $('estadoModelo').hidden = false;
   $('estadoModelo').textContent = 'Carregando modelo (≈12 MB)…';
   try {
     const r = await detector.carregar(estado.detector);
+    if (meu !== pedidoCarga) return; // o usuário trocou de detector no meio do caminho
     $('vProvedor').textContent = r.provedor === 'webgpu' ? 'WebGPU' : `WASM ×${r.threads}`;
     detectorPronto = true;
     $('estadoModelo').hidden = true;
   } catch (e) {
+    if (meu !== pedidoCarga) return;
+    if (!tentouAlternativo) {
+      // se um modelo não carregar, cai para o outro em vez de deixar o agente parado
+      const outro = estado.detector === 'proprio' ? 'coco' : 'proprio';
+      console.warn(`Falha ao carregar ${estado.detector}; usando ${outro}.`, e);
+      selecionar('detector', outro);
+      return carregarDetector(true);
+    }
     $('estadoModelo').textContent = `Não foi possível carregar o modelo: ${e.message}`;
   }
   const m = MODELOS[estado.detector];
@@ -226,19 +237,25 @@ function sincronizarFaixas() {
   $('oLimiar').textContent = Number(estado.limiar).toFixed(2);
   $('oLatencia').textContent = `${estado.latenciaExtra} ms`;
 }
+/** Marca o botão do controle segmentado e atualiza o estado (sem disparar recarga). */
+function selecionar(campo, valor) {
+  const seg = document.querySelector(`.seg[data-campo="${campo}"]`);
+  seg.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x.dataset.v === valor)));
+  estado[campo] = valor;
+  if (campo === 'detector') {
+    estado.limiar = LIMIAR_PADRAO[valor];
+    sincronizarFaixas();
+    ultimas = { deteccoes: [], tObs: 0 };
+  }
+}
 document.querySelectorAll('.seg').forEach((seg) => {
   seg.addEventListener('click', (ev) => {
     const b = ev.target.closest('button');
     if (!b) return;
-    seg.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
     const campo = seg.dataset.campo;
-    estado[campo] = b.dataset.v;
-    if (campo === 'detector') {
-      estado.limiar = LIMIAR_PADRAO[estado.detector];
-      sincronizarFaixas();
-      ultimas = { deteccoes: [], tObs: 0 };
-      carregarDetector();
-    }
+    if (estado[campo] === b.dataset.v) return;
+    selecionar(campo, b.dataset.v);
+    if (campo === 'detector') carregarDetector();
     if (campo === 'modo') { if (alvoMira) { alvoMira.resolver(false); alvoMira = null; } }
   });
 });
