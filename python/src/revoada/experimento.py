@@ -40,7 +40,7 @@ def rodar(detectores: list[str], sementes: list[int], duracao: float, porta: int
     BRUTO.parent.mkdir(parents=True, exist_ok=True)
     feitos = set()
     if BRUTO.exists():
-        feitos = {chave(json.loads(linha)) for linha in BRUTO.read_text().splitlines() if linha}
+        feitos = {chave(json.loads(linha)) for linha in BRUTO.read_text(encoding="utf-8").splitlines() if linha}
     limiares = limiares_escolhidos()
     proc = iniciar_servidor(porta, isolado=True)
     try:
@@ -76,7 +76,7 @@ def ic_bootstrap(valores: np.ndarray, n: int = 2000, semente: int = 0) -> tuple[
 
 
 def resumir() -> dict:
-    episodios = [json.loads(linha) for linha in BRUTO.read_text().splitlines() if linha]
+    episodios = [json.loads(linha) for linha in BRUTO.read_text(encoding="utf-8").splitlines() if linha]
     grupos: dict[tuple, list[dict]] = {}
     for ep in episodios:
         grupos.setdefault((ep["detector"], ep["politica"], ep["latencia"]), []).append(ep)
@@ -106,7 +106,7 @@ def resumir() -> dict:
         })
     resumo = {"linhas": linhas, "limiares": limiares_escolhidos()}
     destino = RAIZ / "reports" / "experimento_politicas.json"
-    destino.write_text(json.dumps(resumo, ensure_ascii=False, indent=1))
+    destino.write_text(json.dumps(resumo, ensure_ascii=False, indent=1), encoding="utf-8")
     print("salvo em", destino)
     return resumo
 

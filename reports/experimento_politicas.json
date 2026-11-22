@@ -4,87 +4,87 @@
    "detector": "oraculo",
    "politica": "antecipacao",
    "latencia_ms": 0,
-   "episodios": 10,
-   "precisao": 0.8857496550066208,
+   "episodios": 6,
+   "precisao": 0.8817501942501943,
    "precisao_ic95": [
-    0.8603400880978281,
-    0.912090169116485
+    0.826923076923077,
+    0.9260878010878012
    ],
-   "abates_por_minuto": 64.8,
+   "abates_por_minuto": 66.0,
    "abates_ic95": [
-    62.8,
-    67.0
+    62.5,
+    69.5
    ],
    "baloes_por_minuto": 0.0,
-   "tiros_por_minuto": 73.2,
-   "deslocamento_alvo_px_mediana": 10.8,
-   "erro_mira_px_mediana": 10.4,
-   "atraso_captura_tiro_ms_mediana": 78.0,
+   "tiros_por_minuto": 75.0,
+   "deslocamento_alvo_px_mediana": 12.5,
+   "erro_mira_px_mediana": 11.75,
+   "atraso_captura_tiro_ms_mediana": 82.5,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "antecipacao",
    "latencia_ms": 50,
-   "episodios": 10,
-   "precisao": 0.7717101289163713,
+   "episodios": 6,
+   "precisao": 0.7745616568266734,
    "precisao_ic95": [
-    0.7468729404775151,
-    0.7972786654135339
+    0.7272601679929266,
+    0.8266449901600067
    ],
-   "abates_por_minuto": 63.4,
+   "abates_por_minuto": 65.5,
    "abates_ic95": [
-    62.0,
-    65.0
+    62.5,
+    69.0
    ],
-   "baloes_por_minuto": 0.2,
-   "tiros_por_minuto": 82.4,
-   "deslocamento_alvo_px_mediana": 19.0,
-   "erro_mira_px_mediana": 13.850000000000001,
-   "atraso_captura_tiro_ms_mediana": 107.5,
+   "baloes_por_minuto": 0.0,
+   "tiros_por_minuto": 85.0,
+   "deslocamento_alvo_px_mediana": 19.35,
+   "erro_mira_px_mediana": 14.850000000000001,
+   "atraso_captura_tiro_ms_mediana": 120.0,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "antecipacao",
    "latencia_ms": 100,
-   "episodios": 10,
-   "precisao": 0.6882860917331938,
+   "episodios": 6,
+   "precisao": 0.6570420991791959,
    "precisao_ic95": [
-    0.672813784545544,
-    0.7046569029289659
+    0.6375405359276326,
+    0.6770765450200934
    ],
-   "abates_por_minuto": 64.8,
+   "abates_por_minuto": 65.0,
    "abates_ic95": [
-    62.4,
-    67.4
+    62.0,
+    68.0
    ],
    "baloes_por_minuto": 0.0,
-   "tiros_por_minuto": 94.4,
-   "deslocamento_alvo_px_mediana": 28.8,
-   "erro_mira_px_mediana": 16.9,
-   "atraso_captura_tiro_ms_mediana": 144.0,
+   "tiros_por_minuto": 99.0,
+   "deslocamento_alvo_px_mediana": 29.5,
+   "erro_mira_px_mediana": 18.8,
+   "atraso_captura_tiro_ms_mediana": 148.5,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "antecipacao",
    "latencia_ms": 200,
-   "episodios": 10,
-   "precisao": 0.5652862678252745,
+   "episodios": 6,
+   "precisao": 0.561711103816367,
    "precisao_ic95": [
-    0.546747108028427,
-    0.5832653538028413
+    0.5463641779431253,
+    0.5754610886189834
    ],
-   "abates_por_minuto": 63.0,
+   "abates_por_minuto": 64.0,
    "abates_ic95": [
-    61.4,
-    64.6
+    62.0,
+    65.5
    ],
-   "baloes_por_minuto": 0.4,
-   "tiros_por_minuto": 111.6,
-   "deslocamento_alvo_px_mediana": 52.849999999999994,
-   "erro_mira_px_mediana": 19.7,
+   "baloes_por_minuto": 1.0,
+   "tiros_por_minuto": 114.0,
+   "deslocamento_alvo_px_mediana": 50.0,
+   "erro_mira_px_mediana": 20.5,
    "atraso_captura_tiro_ms_mediana": 244.0,
    "inferencia_ms_mediana": 0.0
   },
@@ -92,87 +92,87 @@
    "detector": "oraculo",
    "politica": "antecipacao",
    "latencia_ms": 300,
-   "episodios": 10,
-   "precisao": 0.29516005048534255,
+   "episodios": 6,
+   "precisao": 0.295205926850817,
    "precisao_ic95": [
-    0.2703019701210254,
-    0.31998648680096275
+    0.2546192651155475,
+    0.33837153143859694
    ],
-   "abates_por_minuto": 46.8,
+   "abates_por_minuto": 46.0,
    "abates_ic95": [
-    43.2,
-    50.2
+    40.0,
+    52.5
    ],
-   "baloes_por_minuto": 1.4,
-   "tiros_por_minuto": 159.2,
-   "deslocamento_alvo_px_mediana": 74.75,
-   "erro_mira_px_mediana": 45.2,
-   "atraso_captura_tiro_ms_mediana": 330.0,
+   "baloes_por_minuto": 0.5,
+   "tiros_por_minuto": 156.5,
+   "deslocamento_alvo_px_mediana": 72.3,
+   "erro_mira_px_mediana": 43.3,
+   "atraso_captura_tiro_ms_mediana": 331.0,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "maiorConfianca",
    "latencia_ms": 0,
-   "episodios": 10,
-   "precisao": 0.8790169092800673,
+   "episodios": 6,
+   "precisao": 0.8765270223603557,
    "precisao_ic95": [
-    0.8534526996040154,
-    0.9069715993071255
+    0.8216702279202278,
+    0.926087801087801
    ],
-   "abates_por_minuto": 64.8,
+   "abates_por_minuto": 66.0,
    "abates_ic95": [
-    62.8,
-    66.8
+    62.5,
+    69.5
    ],
    "baloes_por_minuto": 0.0,
-   "tiros_por_minuto": 73.8,
-   "deslocamento_alvo_px_mediana": 10.8,
-   "erro_mira_px_mediana": 10.8,
-   "atraso_captura_tiro_ms_mediana": 77.0,
+   "tiros_por_minuto": 75.5,
+   "deslocamento_alvo_px_mediana": 12.5,
+   "erro_mira_px_mediana": 12.5,
+   "atraso_captura_tiro_ms_mediana": 82.0,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "maiorConfianca",
    "latencia_ms": 50,
-   "episodios": 10,
-   "precisao": 0.7058182139584246,
+   "episodios": 6,
+   "precisao": 0.701354405398523,
    "precisao_ic95": [
-    0.6699194572550893,
-    0.7476460704271813
+    0.6515708556149732,
+    0.756358225108225
    ],
-   "abates_por_minuto": 65.0,
+   "abates_por_minuto": 65.5,
    "abates_ic95": [
-    63.2,
-    66.6
+    63.5,
+    68.0
    ],
    "baloes_por_minuto": 0.0,
-   "tiros_por_minuto": 93.0,
-   "deslocamento_alvo_px_mediana": 18.25,
-   "erro_mira_px_mediana": 18.25,
-   "atraso_captura_tiro_ms_mediana": 97.0,
+   "tiros_por_minuto": 94.0,
+   "deslocamento_alvo_px_mediana": 18.1,
+   "erro_mira_px_mediana": 18.1,
+   "atraso_captura_tiro_ms_mediana": 104.0,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "maiorConfianca",
    "latencia_ms": 100,
-   "episodios": 10,
-   "precisao": 0.30916914454094896,
+   "episodios": 6,
+   "precisao": 0.2930709125033975,
    "precisao_ic95": [
-    0.2693719076802796,
-    0.34433110060461647
+    0.2220863004071024,
+    0.3444272902226297
    ],
-   "abates_por_minuto": 47.6,
+   "abates_por_minuto": 44.0,
    "abates_ic95": [
-    41.8,
-    53.0
+    34.0,
+    52.0
    ],
-   "baloes_por_minuto": 0.4,
-   "tiros_por_minuto": 154.4,
-   "deslocamento_alvo_px_mediana": 29.4,
-   "erro_mira_px_mediana": 29.4,
+   "baloes_por_minuto": 0.0,
+   "tiros_por_minuto": 152.0,
+   "deslocamento_alvo_px_mediana": 29.9,
+   "erro_mira_px_mediana": 29.9,
    "atraso_captura_tiro_ms_mediana": 122.0,
    "inferencia_ms_mediana": 0.0
   },
@@ -180,21 +180,21 @@
    "detector": "oraculo",
    "politica": "maiorConfianca",
    "latencia_ms": 200,
-   "episodios": 10,
-   "precisao": 0.058719509867542076,
+   "episodios": 6,
+   "precisao": 0.07105841018884497,
    "precisao_ic95": [
-    0.03935967540812561,
-    0.08361366123347455
+    0.036553945249597423,
+    0.11701068657590397
    ],
-   "abates_por_minuto": 8.0,
+   "abates_por_minuto": 9.5,
    "abates_ic95": [
-    5.3950000000000005,
-    11.4
+    5.0,
+    15.5
    ],
-   "baloes_por_minuto": 0.6,
-   "tiros_por_minuto": 136.4,
-   "deslocamento_alvo_px_mediana": 52.6,
-   "erro_mira_px_mediana": 52.6,
+   "baloes_por_minuto": 1.0,
+   "tiros_por_minuto": 135.0,
+   "deslocamento_alvo_px_mediana": 48.8,
+   "erro_mira_px_mediana": 48.8,
    "atraso_captura_tiro_ms_mediana": 226.0,
    "inferencia_ms_mediana": 0.0
   },
@@ -202,87 +202,87 @@
    "detector": "oraculo",
    "politica": "maiorConfianca",
    "latencia_ms": 300,
-   "episodios": 10,
-   "precisao": 0.017850127325838953,
+   "episodios": 6,
+   "precisao": 0.011375661375661374,
    "precisao_ic95": [
-    0.006632435262373645,
-    0.03144391434937385
+    0.0026455026455026454,
+    0.02314814814814815
    ],
-   "abates_por_minuto": 3.2,
+   "abates_por_minuto": 2.0,
    "abates_ic95": [
-    1.2,
-    5.6
+    0.5,
+    4.0
    ],
-   "baloes_por_minuto": 1.8,
-   "tiros_por_minuto": 179.2,
-   "deslocamento_alvo_px_mediana": 69.9,
-   "erro_mira_px_mediana": 69.9,
-   "atraso_captura_tiro_ms_mediana": 319.0,
+   "baloes_por_minuto": 2.0,
+   "tiros_por_minuto": 179.0,
+   "deslocamento_alvo_px_mediana": 67.1,
+   "erro_mira_px_mediana": 67.1,
+   "atraso_captura_tiro_ms_mediana": 318.0,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "maisPerto",
    "latencia_ms": 0,
-   "episodios": 10,
-   "precisao": 0.8790169092800673,
+   "episodios": 6,
+   "precisao": 0.8765270223603557,
    "precisao_ic95": [
-    0.8534526996040154,
-    0.9069715993071255
+    0.8216702279202278,
+    0.926087801087801
    ],
-   "abates_por_minuto": 64.8,
+   "abates_por_minuto": 66.0,
    "abates_ic95": [
-    62.8,
-    66.8
+    62.5,
+    69.5
    ],
    "baloes_por_minuto": 0.0,
-   "tiros_por_minuto": 73.8,
-   "deslocamento_alvo_px_mediana": 10.8,
-   "erro_mira_px_mediana": 10.8,
-   "atraso_captura_tiro_ms_mediana": 77.0,
+   "tiros_por_minuto": 75.5,
+   "deslocamento_alvo_px_mediana": 12.5,
+   "erro_mira_px_mediana": 12.5,
+   "atraso_captura_tiro_ms_mediana": 82.0,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "maisPerto",
    "latencia_ms": 50,
-   "episodios": 10,
-   "precisao": 0.7041819093183652,
+   "episodios": 6,
+   "precisao": 0.7017752808193984,
    "precisao_ic95": [
-    0.6684429429243247,
-    0.747392938558402
+    0.6532438354129531,
+    0.756358225108225
    ],
-   "abates_por_minuto": 65.0,
+   "abates_por_minuto": 66.5,
    "abates_ic95": [
-    63.2,
-    66.6
+    64.5,
+    68.5
    ],
-   "baloes_por_minuto": 0.2,
-   "tiros_por_minuto": 93.2,
-   "deslocamento_alvo_px_mediana": 17.8,
-   "erro_mira_px_mediana": 17.8,
-   "atraso_captura_tiro_ms_mediana": 97.0,
+   "baloes_por_minuto": 0.0,
+   "tiros_por_minuto": 95.5,
+   "deslocamento_alvo_px_mediana": 17.85,
+   "erro_mira_px_mediana": 17.85,
+   "atraso_captura_tiro_ms_mediana": 101.0,
    "inferencia_ms_mediana": 0.0
   },
   {
    "detector": "oraculo",
    "politica": "maisPerto",
    "latencia_ms": 100,
-   "episodios": 10,
-   "precisao": 0.3102070805370135,
+   "episodios": 6,
+   "precisao": 0.2977903282525131,
    "precisao_ic95": [
-    0.2744203535543593,
-    0.356074684107857
+    0.23212739641311067,
+    0.3586948415729928
    ],
-   "abates_por_minuto": 47.2,
+   "abates_por_minuto": 45.5,
    "abates_ic95": [
-    42.2,
-    52.6
+    37.4875,
+    53.0
    ],
-   "baloes_por_minuto": 0.8,
-   "tiros_por_minuto": 153.0,
-   "deslocamento_alvo_px_mediana": 29.6,
-   "erro_mira_px_mediana": 29.6,
+   "baloes_por_minuto": 0.0,
+   "tiros_por_minuto": 155.5,
+   "deslocamento_alvo_px_mediana": 30.5,
+   "erro_mira_px_mediana": 30.5,
    "atraso_captura_tiro_ms_mediana": 122.0,
    "inferencia_ms_mediana": 0.0
   },
@@ -290,21 +290,21 @@
    "detector": "oraculo",
    "politica": "maisPerto",
    "latencia_ms": 200,
-   "episodios": 10,
-   "precisao": 0.06972542294010402,
+   "episodios": 6,
+   "precisao": 0.08819259508436196,
    "precisao_ic95": [
-    0.051850066437996355,
-    0.09380337329610615
+    0.052040618955512555,
+    0.12875423990132595
    ],
-   "abates_por_minuto": 9.6,
+   "abates_por_minuto": 12.0,
    "abates_ic95": [
-    7.2,
-    12.804999999999973
+    7.0,
+    17.5
    ],
-   "baloes_por_minuto": 1.4,
-   "tiros_por_minuto": 137.8,
-   "deslocamento_alvo_px_mediana": 48.0,
-   "erro_mira_px_mediana": 48.0,
+   "baloes_por_minuto": 2.5,
+   "tiros_por_minuto": 137.0,
+   "deslocamento_alvo_px_mediana": 47.9,
+   "erro_mira_px_mediana": 47.9,
    "atraso_captura_tiro_ms_mediana": 224.0,
    "inferencia_ms_mediana": 0.0
   },
@@ -312,28 +312,28 @@
    "detector": "oraculo",
    "politica": "maisPerto",
    "latencia_ms": 300,
-   "episodios": 10,
-   "precisao": 0.018602949517499964,
+   "episodios": 6,
+   "precisao": 0.010846705488586296,
    "precisao_ic95": [
-    0.009752156088592258,
-    0.02923604067422701
+    0.005333674688513398,
+    0.016359736288659197
    ],
-   "abates_por_minuto": 3.4,
+   "abates_por_minuto": 2.0,
    "abates_ic95": [
-    1.8,
-    5.4
+    1.0,
+    3.0
    ],
-   "baloes_por_minuto": 1.8,
-   "tiros_por_minuto": 183.0,
-   "deslocamento_alvo_px_mediana": 65.0,
-   "erro_mira_px_mediana": 65.0,
+   "baloes_por_minuto": 1.5,
+   "tiros_por_minuto": 184.0,
+   "deslocamento_alvo_px_mediana": 66.0,
+   "erro_mira_px_mediana": 66.0,
    "atraso_captura_tiro_ms_mediana": 317.0,
    "inferencia_ms_mediana": 0.0
   }
  ],
  "limiares": {
   "oraculo": 0.5,
-  "proprio": 0.5,
-  "coco": 0.25
+  "proprio": 0.4,
+  "coco": 0.15
  }
 }

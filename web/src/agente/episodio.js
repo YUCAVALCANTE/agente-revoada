@@ -11,7 +11,7 @@ export const PADRAO = {
   duracao: 60, // segundos de jogo
   vMira: 4000, // px/s: velocidade da mira (mouse movido por software)
   recarga: 0.25, // s entre tiros
-  periodoQuadro: 1 / 30, // intervalo mínimo entre capturas
+  periodoQuadro: 1 / 15, // intervalo mínimo entre capturas (no máximo 15 quadros/s)
   limiar: 0.5,
   maxAves: 3,
   maxBaloes: 2,

@@ -14,7 +14,16 @@ Um agente que **só vê os pixels** de um jogo de tiro ao alvo no navegador, det
 
 ## Resumo dos resultados
 
-<!--RESUMO-->
+| Pergunta | Resultado |
+|---|---|
+| Um detector pronto (YOLOv8n COCO) enxerga as aves de papel? | Mal. Ele chama **40% delas de `kite`** e só **1 em 2.462 de `bird`**; 59% nem são detectadas. Também chama **28% dos balões de `kite`**, então um agente que atira em bird/kite estoura balões. |
+| Quanto ele acerta tratando bird/kite como alvo? | **AP@0,5 = 0,27** (640 px) e 0,42 (416 px) no teste. |
+| E um YOLOv8n treinado nos quadros do jogo? | **AP@0,5 = 0,994** (ave) e 0,989 (balão) no teste; **0,991** num cenário noturno que o treino nunca viu. Precisão 99% e recall 98% no limiar escolhido na validação. |
+| Quanto a latência custa à regra "maior confiança no centro da caixa"? | Mesmo com visão perfeita (caixas reais), a precisão dos tiros cai de **88% sem atraso para 29% com 100 ms e 7% com 200 ms**. |
+| Mirar com antecipação resolve? | Em boa parte: **66% com 100 ms e 56% com 200 ms**, nos mesmos episódios. |
+| Roda no navegador? | Sim: ONNX no Web Worker com onnxruntime-web. Em CPU (onnxruntime, 1 thread), cada quadro leva ~68 ms. |
+
+> **Pendente:** a comparação das políticas usando os detectores reais (o treinado e o COCO) no lugar das caixas reais não terminou por limite de tempo e de hardware; a seção 4 traz só o agente com visão perfeita.
 
 ---
 
@@ -47,7 +56,28 @@ Variação: 0 a 5 aves e 0 a 3 balões por quadro, 6 paletas de ave, escala de 0
 
 **Protocolo.** Métricas implementadas do zero em `python/src/revoada/metricas.py` (com testes): casamento guloso por IoU ≥ 0,5, AP com interpolação em todos os pontos (VOC), precisão e recall por limiar. O detector COCO não tem a classe "ave de papel", então pergunto: *se eu tratar certas classes COCO como alvo* (`bird`; `bird` ou `kite`; qualquer classe), quanto ele acerta? O limiar de confiança usado pelo agente é o de **maior F1 na validação**, nunca no teste.
 
-<!--DETECCAO-->
+**Teste (1.000 quadros, dia e entardecer) e teste noturno (500 quadros, cenário fora do treino):**
+
+| Detector (o que conta como "ave") | AP@0,5 teste | AP@0,5 noite | Precisão | Recall |
+|---|---:|---:|---:|---:|
+| COCO YOLOv8n 640 · só `bird` | 0,009 | 0,038 | — | 0% |
+| COCO YOLOv8n 640 · `bird` ou `kite` | 0,268 | 0,375 | 37% | 40% |
+| COCO YOLOv8s 640 · `bird` ou `kite` | 0,217 | 0,306 | 52% | 19% |
+| COCO YOLOv8n 640 · qualquer classe | 0,219 | 0,083 | 28% | 41% |
+| COCO YOLOv8n 416 · `bird` ou `kite` (o da demo) | 0,424 | 0,456 | 49% | 50% |
+| **Treinado no jogo YOLOv8n 416 · `ave`** | **0,994** | **0,991** | **99%** | **98%** |
+
+Precisão e recall dos modelos COCO no limiar 0,25; do modelo treinado, no limiar 0,40 (máximo F1 na validação).
+
+<p align="center"><img src="reports/figures/classes_coco.png" width="90%"></p>
+<p align="center"><img src="reports/figures/precisao_recall_limiar.png" width="90%"></p>
+
+**Leitura.**
+
+1. **O fenômeno do artigo se repete com números.** O COCO não tem "ave de papel" e escolhe a categoria mais parecida que conhece: `kite`. Só que `kite` também é o nome que ele dá a balões e até a nuvens; usar a classe errada como sinal de mira gera falsos positivos que um agente transformaria em tiros perdidos ou balões estourados.
+2. **Um modelo maior não resolve.** O YOLOv8s COCO é mais preciso, mas acha menos aves (recall de 19%).
+3. **Treinar no domínio resolve quase tudo**, e o desempenho se mantém à noite. A ressalva: é um mundo sintético e limpo, então 0,99 aqui não diz nada sobre fotos reais (ver Limitações).
+4. **Treino curto.** O modelo foi ajustado por 3 épocas em CPU (~1 h) a partir dos pesos COCO; a validação já estava em 0,989 de mAP@0,5 na 1ª época.
 
 ## 4. Decisão: onde clicar
 
@@ -62,12 +92,31 @@ Variação: 0 a 5 aves e 0 a 3 balões por quadro, 6 paletas de ave, escala de 0
 ### Protocolo do experimento (`python/src/revoada/experimento.py`)
 
 * **Relógio virtual.** O mundo só anda quando o agente gasta tempo. A latência de percepção (captura → decisão) é um parâmetro controlado (0, 50, 100, 200 e 300 ms), não um acidente do hardware; por isso o experimento é determinístico e reprodutível.
-* **Detector real.** Cada quadro é desenhado no canvas e enviado ao mesmo Web Worker da demo, com o mesmo ONNX e o mesmo pós-processamento, num Chromium headless.
-* **Episódios pareados.** <!--EPISODIOS--> Cada combinação (detector × política × latência) usa as mesmas sementes: mesma partida, só muda a decisão.
+* **Detector.** O harness (`web/experimento.html`) envia cada quadro ao mesmo Web Worker da demo, com o mesmo ONNX, num Chromium headless. Nesta versão só a rodada com o **detector oráculo** (caixas reais) foi concluída; a rodada com os detectores reais ficou pendente.
+* **Episódios pareados.** 6 episódios de 20 s por ponto, com captura de no máximo 15 quadros/s. Cada combinação (detector × política × latência) usa as mesmas sementes: mesma partida, só muda a decisão.
 * **Mecânica:** mira a 4.000 px/s, 250 ms de recarga entre tiros, até 3 aves e 2 balões na tela. Métrica principal: **precisão** = aves abatidas ÷ tiros. IC de 95% por bootstrap nos episódios.
 * **Teto.** Um "detector oráculo" que devolve as caixas reais separa erro de visão de erro de decisão.
 
-<!--POLITICAS-->
+<p align="center"><img src="reports/figures/politicas_latencia.png" width="55%"></p>
+
+**Agente com visão perfeita (caixas reais), precisão dos tiros (IC 95%):**
+
+| Latência | Maior confiança | Mais perto da mira | Antecipação |
+|---:|---:|---:|---:|
+| 0 ms | 88% (82–93) | 88% (82–93) | 88% (83–93) |
+| 50 ms | 70% (65–76) | 70% (65–76) | 77% (73–83) |
+| 100 ms | 29% (22–34) | 30% (23–36) | **66%** (64–68) |
+| 200 ms | 7% (4–12) | 9% (5–13) | **56%** (55–58) |
+| 300 ms | 1% (0–2) | 1% (1–2) | **30%** (25–34) |
+
+<p align="center"><img src="reports/figures/erro_mira_latencia.png" width="60%"></p>
+
+**Leitura.**
+
+1. **"Acertar onde o pato estava" é o gargalo, não a visão.** Mesmo com caixas perfeitas, a regra do artigo perde quase tudo a partir de 100 ms: em 200 ms a ave anda ~50 px (mediana) entre a captura e o tiro, mais que o tamanho do corpo dela.
+2. **Mais perto da mira quase não ajuda**, porque a mira (4.000 px/s) já é rápida; o atraso que importa é o de percepção.
+3. **Antecipar mantém o agente útil até ~200 ms.** Acima disso a ave faz curvas entre a captura e o tiro e o modelo de velocidade constante falha (30% em 300 ms).
+4. Com latência zero as três empatam: sem atraso, mirar no centro já basta.
 
 ## 5. Execução no navegador
 
@@ -87,11 +136,16 @@ move a mira, clica
 * O provedor de execução é escolhido em tempo de execução: WebGPU quando o navegador entrega um adaptador em até 2 s, senão WASM. Se um modelo não carregar, a página troca para o outro detector em vez de deixar o agente parado.
 * As caixas são desenhadas **no quadro em que foram vistas**. Com latência alta dá para ver o agente atirando onde a ave estava.
 
-<!--LATENCIA-->
+**Tempo de inferência (ONNX, 416×416, onnxruntime em CPU de notebook):** treinado no jogo, 68 ms com 1 thread e 42 ms com todas; COCO, 75 ms e 31 ms. No navegador, o painel da demo mostra o tempo medido no seu aparelho.
 
 ## 6. Limitações
 
-<!--LIMITACOES-->
+* **Mundo sintético.** As aves são poucas formas geométricas com 6 paletas; o detector treinado acerta 99% porque o problema é fácil e o teste vem do mesmo gerador (com sementes novas). O teste noturno mede só uma mudança de cenário; não há fotos reais.
+* **Políticas com detectores reais: pendente.** A rodada do experimento com o detector treinado e com o COCO no lugar das caixas reais não terminou. Com o COCO, o esperado é a precisão cair bem mais (recall de 50% e balões confundidos com `kite`).
+* **Treino curto e em CPU**: 3 épocas, sem busca de hiperparâmetros.
+* **Modelo de movimento simples.** A antecipação supõe velocidade constante entre quadros; um filtro de Kalman deve render mais em latências altas.
+* **O agente não aprende.** As políticas são regras fixas, como no artigo; aprendizado por reforço fica como próximo passo.
+* **Uma máquina só.** Os tempos de inferência são de um notebook; o painel da demo mede o seu.
 
 ## 7. Como reproduzir
 
@@ -105,11 +159,11 @@ python -m playwright install chromium
 python -m revoada.dataset
 
 # 3) baixar os pesos COCO (yolov8n.pt e yolov8s.pt) em dados/pesos/, treinar e exportar para ONNX
-python -m revoada.treinar --epocas 12 --dispositivo cpu        # ou --dispositivo 0 para GPU
+python -m revoada.treinar --epocas 3 --lote 8 --workers 0     # CPU; com GPU: --dispositivo 0 e mais épocas
 
 # 4) avaliar detectores, rodar o experimento de políticas e gerar figuras
 python -m revoada.avaliar
-python -m revoada.experimento --sementes 10 --duracao 30
+python -m revoada.experimento --sementes 6 --duracao 20
 python -m revoada.graficos
 
 # 5) testes e demo local

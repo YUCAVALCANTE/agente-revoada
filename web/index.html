@@ -95,7 +95,7 @@
         <p><b>Aqui:</b> essa é a política "Maior confiança", comparada com "Mais perto da mira" e com "Antecipação", que rastreia cada alvo entre quadros e estima sua velocidade.</p></div></article>
       <article class="card passo"><span class="num">4</span><div><h3>Acertar onde o pato estava</h3>
         <p><b>No artigo:</b> a 200 px/s, 100 ms de latência já deslocam o alvo 20 px.</p>
-        <p><b>Aqui:</b> a latência vira um parâmetro controlado (0 a 300 ms), em episódios pareados, e o gráfico abaixo mostra quanto cada política perde. Arraste "Latência extra simulada" e veja o agente atirar no lugar onde a ave estava.</p></div></article>
+        <p><b>Aqui:</b> a latência vira um parâmetro controlado (0 a 300 ms). Com visão perfeita, mirar no centro da caixa acerta 88% sem atraso e 7% com 200 ms; mirando à frente, 56%. Arraste "Latência extra simulada" e veja o agente atirar no lugar onde a ave estava.</p></div></article>
       <article class="card passo"><span class="num">5</span><div><h3>Web Worker, createImageBitmap e OffscreenCanvas</h3>
         <p><b>No artigo:</b> tirar a inferência da thread principal evita travar a interface, mas não a deixa mais rápida.</p>
         <p><b>Aqui:</b> o quadro vai para o Worker como <code>ImageBitmap</code> transferido, o pré-processamento roda num <code>OffscreenCanvas</code> e a rede roda com onnxruntime-web (WebGPU ou WASM). O painel mostra o tempo de inferência real no seu aparelho.</p></div></article>
@@ -108,7 +108,7 @@
   <section id="resultados">
     <div class="sec-head">
       <h2>O que os números mostram</h2>
-      <p>Medido fora desta página: 1.500 quadros de teste rotulados pelo próprio jogo e episódios pareados em relógio virtual, com a mesma rede ONNX rodando no Chromium. Protocolo completo no <a href="https://github.com/YUCAVALCANTE/agente-revoada#readme">relatório</a>.</p>
+      <p>Medido fora desta página: 1.500 quadros de teste rotulados pelo próprio jogo e episódios pareados em relógio virtual. O experimento das políticas usa as caixas reais do jogo (visão perfeita) para isolar o efeito da decisão; a mesma comparação com os detectores reais ficou pendente. Protocolo completo no <a href="https://github.com/YUCAVALCANTE/agente-revoada#readme">relatório</a>.</p>
     </div>
     <div class="grade" id="graficos"><p>Carregando resultados…</p></div>
   </section>

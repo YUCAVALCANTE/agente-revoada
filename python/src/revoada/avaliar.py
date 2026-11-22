@@ -37,14 +37,14 @@ LIMIARES = (0.05, 0.1, 0.25, 0.4, 0.5, 0.7)
 
 
 def carregar_reais(split: str) -> dict[str, list[dict]]:
-    rotulos = json.loads((DADOS / "revoada" / f"rotulos_{split}.json").read_text())
+    rotulos = json.loads((DADOS / "revoada" / f"rotulos_{split}.json").read_text(encoding="utf-8"))
     return {nome: r["caixas"] for nome, r in rotulos.items()}
 
 
 def prever(nome_det: str, split: str) -> dict[str, list[dict]]:
     cache = DADOS / "predicoes" / f"{nome_det}_{split}.json"
     if cache.exists():
-        return json.loads(cache.read_text())
+        return json.loads(cache.read_text(encoding="utf-8"))
     from ultralytics import YOLO
 
     pesos, imgsz, _ = DETECTORES[nome_det]
@@ -134,7 +134,7 @@ def main() -> None:
 
     destino = RAIZ / "reports" / "metricas_deteccao.json"
     destino.parent.mkdir(exist_ok=True)
-    destino.write_text(json.dumps(resultado, ensure_ascii=False, indent=1))
+    destino.write_text(json.dumps(resultado, ensure_ascii=False, indent=1), encoding="utf-8")
     print("salvo em", destino)
 
 

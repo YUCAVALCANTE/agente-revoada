@@ -1,0 +1,267 @@
+{
+ "limiares": {
+  "proprio": 0.4,
+  "coco": 0.15
+ },
+ "classesCoco": {
+  "n": 1000,
+  "ave": [
+   [
+    "não detectado",
+    0.5922014622258327
+   ],
+   [
+    "kite",
+    0.4033306255077173
+   ],
+   [
+    "airplane",
+    0.002843216896831844
+   ],
+   [
+    "umbrella",
+    0.0008123476848090983
+   ],
+   [
+    "bird",
+    0.00040617384240454913
+   ],
+   [
+    "person",
+    0.00040617384240454913
+   ]
+  ]
+ },
+ "deteccao": [
+  {
+   "rotulo": "COCO YOLOv8n · bird",
+   "destaque": false,
+   "ap50_teste": 0.00884336162999084,
+   "ap50_noite": 0.037646779682127984,
+   "precisao": 1.0,
+   "recall": 0.00040617384240454913
+  },
+  {
+   "rotulo": "COCO YOLOv8n · bird ou kite",
+   "destaque": false,
+   "ap50_teste": 0.26758114995224086,
+   "ap50_noite": 0.3748825346664329,
+   "precisao": 0.3666048237476809,
+   "recall": 0.40129975629569453
+  },
+  {
+   "rotulo": "COCO YOLOv8s · bird ou kite",
+   "destaque": false,
+   "ap50_teste": 0.2170717895285742,
+   "ap50_noite": 0.3064797749792405,
+   "precisao": 0.5170893054024256,
+   "recall": 0.19049553208773354
+  },
+  {
+   "rotulo": "COCO YOLOv8n · qualquer classe",
+   "destaque": false,
+   "ap50_teste": 0.21919296719908316,
+   "ap50_noite": 0.08328287148279241,
+   "precisao": 0.27751462803009197,
+   "recall": 0.40454914703493094
+  },
+  {
+   "rotulo": "Treinado no jogo · ave",
+   "destaque": true,
+   "ap50_teste": 0.9937090755091696,
+   "ap50_noite": 0.9912985913595893,
+   "precisao": 0.9901840490797545,
+   "recall": 0.9833468724614135
+  }
+ ],
+ "vitrine": [
+  {
+   "classe": "não detectada",
+   "n": 1458,
+   "fracao": 0.5922
+  },
+  {
+   "classe": "kite",
+   "n": 993,
+   "fracao": 0.4033
+  },
+  {
+   "classe": "airplane",
+   "n": 7,
+   "fracao": 0.0028
+  },
+  {
+   "classe": "bird",
+   "n": 1,
+   "fracao": 0.0004
+  }
+ ],
+ "latencias": [
+  0,
+  50,
+  100,
+  200,
+  300
+ ],
+ "politicas": {
+  "oraculo": {
+   "antecipacao": [
+    {
+     "latencia_ms": 0,
+     "precisao": 0.8817501942501943,
+     "precisao_ic95": [
+      0.826923076923077,
+      0.9260878010878012
+     ],
+     "abates_por_minuto": 66.0,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 50,
+     "precisao": 0.7745616568266734,
+     "precisao_ic95": [
+      0.7272601679929266,
+      0.8266449901600067
+     ],
+     "abates_por_minuto": 65.5,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 100,
+     "precisao": 0.6570420991791959,
+     "precisao_ic95": [
+      0.6375405359276326,
+      0.6770765450200934
+     ],
+     "abates_por_minuto": 65.0,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 200,
+     "precisao": 0.561711103816367,
+     "precisao_ic95": [
+      0.5463641779431253,
+      0.5754610886189834
+     ],
+     "abates_por_minuto": 64.0,
+     "baloes_por_minuto": 1.0
+    },
+    {
+     "latencia_ms": 300,
+     "precisao": 0.295205926850817,
+     "precisao_ic95": [
+      0.2546192651155475,
+      0.33837153143859694
+     ],
+     "abates_por_minuto": 46.0,
+     "baloes_por_minuto": 0.5
+    }
+   ],
+   "maiorConfianca": [
+    {
+     "latencia_ms": 0,
+     "precisao": 0.8765270223603557,
+     "precisao_ic95": [
+      0.8216702279202278,
+      0.926087801087801
+     ],
+     "abates_por_minuto": 66.0,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 50,
+     "precisao": 0.701354405398523,
+     "precisao_ic95": [
+      0.6515708556149732,
+      0.756358225108225
+     ],
+     "abates_por_minuto": 65.5,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 100,
+     "precisao": 0.2930709125033975,
+     "precisao_ic95": [
+      0.2220863004071024,
+      0.3444272902226297
+     ],
+     "abates_por_minuto": 44.0,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 200,
+     "precisao": 0.07105841018884497,
+     "precisao_ic95": [
+      0.036553945249597423,
+      0.11701068657590397
+     ],
+     "abates_por_minuto": 9.5,
+     "baloes_por_minuto": 1.0
+    },
+    {
+     "latencia_ms": 300,
+     "precisao": 0.011375661375661374,
+     "precisao_ic95": [
+      0.0026455026455026454,
+      0.02314814814814815
+     ],
+     "abates_por_minuto": 2.0,
+     "baloes_por_minuto": 2.0
+    }
+   ],
+   "maisPerto": [
+    {
+     "latencia_ms": 0,
+     "precisao": 0.8765270223603557,
+     "precisao_ic95": [
+      0.8216702279202278,
+      0.926087801087801
+     ],
+     "abates_por_minuto": 66.0,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 50,
+     "precisao": 0.7017752808193984,
+     "precisao_ic95": [
+      0.6532438354129531,
+      0.756358225108225
+     ],
+     "abates_por_minuto": 66.5,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 100,
+     "precisao": 0.2977903282525131,
+     "precisao_ic95": [
+      0.23212739641311067,
+      0.3586948415729928
+     ],
+     "abates_por_minuto": 45.5,
+     "baloes_por_minuto": 0.0
+    },
+    {
+     "latencia_ms": 200,
+     "precisao": 0.08819259508436196,
+     "precisao_ic95": [
+      0.052040618955512555,
+      0.12875423990132595
+     ],
+     "abates_por_minuto": 12.0,
+     "baloes_por_minuto": 2.5
+    },
+    {
+     "latencia_ms": 300,
+     "precisao": 0.010846705488586296,
+     "precisao_ic95": [
+      0.005333674688513398,
+      0.016359736288659197
+     ],
+     "abates_por_minuto": 2.0,
+     "baloes_por_minuto": 1.5
+    }
+   ]
+  }
+ },
+ "episodios": 6
+}

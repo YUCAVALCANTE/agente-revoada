@@ -113,7 +113,8 @@ def fig_politicas(exp: dict) -> None:
 
 
 def fig_deslocamento(exp: dict) -> None:
-    ls = [linha for linha in exp["linhas"] if linha["detector"] == "proprio"]
+    det = "proprio" if any(linha["detector"] == "proprio" for linha in exp["linhas"]) else "oraculo"
+    ls = [linha for linha in exp["linhas"] if linha["detector"] == det]
     fig, ax = plt.subplots(figsize=(6.4, 3.4))
     for pol, (cor, estilo) in {"maiorConfianca": (CINZA, "-"), "antecipacao": (AZUL, "-")}.items():
         sel = sorted([linha for linha in ls if linha["politica"] == pol], key=lambda linha: linha["latencia_ms"])
@@ -135,8 +136,8 @@ def fig_deslocamento(exp: dict) -> None:
 
 def fig_exemplos(det: dict) -> None:
     """Quadros de teste com as caixas reais e as detecções dos dois modelos."""
-    reais = json.loads((RAIZ / "dados" / "revoada" / "rotulos_teste.json").read_text())
-    preds = {n: json.loads((RAIZ / "dados" / "predicoes" / f"{n}_teste.json").read_text())
+    reais = json.loads((RAIZ / "dados" / "revoada" / "rotulos_teste.json").read_text(encoding="utf-8"))
+    preds = {n: json.loads((RAIZ / "dados" / "predicoes" / f"{n}_teste.json").read_text(encoding="utf-8"))
              for n in ("coco_yolov8n_640", "revoada_yolov8n_416")}
     limiar = det.get("limiar_escolhido", {})
     nomes = ["teste_200003", "teste_200011", "teste_200024"]

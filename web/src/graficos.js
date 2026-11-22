@@ -112,17 +112,19 @@ async function montar() {
 
   const xs = r.latencias;
   const serie = (det, pol, campo = 'precisao') => r.politicas[det]?.[pol]?.map((p) => [p.latencia_ms, p[campo]]);
+  const detLat = r.politicas.proprio ? 'proprio' : 'oraculo';
   const c3 = card('Acertar onde a ave estava: precisão × latência',
-    `Detector treinado no jogo, ${r.episodios} episódios pareados por ponto. Mirar no centro da caixa funciona só com o mundo parado; com atraso, a ave já saiu dali. Estimar a velocidade entre quadros e mirar à frente recupera boa parte dos acertos.`);
+    `${detLat === 'proprio' ? 'Detector treinado no jogo' : 'Agente com as caixas reais do jogo (visão perfeita), para isolar o efeito da decisão'}, ${r.episodios} episódios pareados por ponto. Mirar no centro da caixa funciona só com o mundo parado; com atraso, a ave já saiu dali. Estimar a velocidade entre quadros e mirar à frente recupera boa parte dos acertos.`);
   c3.append(linhas(
-    Object.keys(NOMES_POL).filter((p) => serie('proprio', p)).map((p) => ({
-      rotulo: NOMES_POL[p], pontos: serie('proprio', p), destaque: p === 'antecipacao', tracejado: p === 'maisPerto',
-      banda: r.politicas.proprio[p].map((x) => [x.latencia_ms, ...x.precisao_ic95]),
+    Object.keys(NOMES_POL).filter((p) => serie(detLat, p)).map((p) => ({
+      rotulo: NOMES_POL[p], pontos: serie(detLat, p), destaque: p === 'antecipacao', tracejado: p === 'maisPerto',
+      banda: r.politicas[detLat][p].map((x) => [x.latencia_ms, ...x.precisao_ic95]),
     })),
     { xs, yRotulo: 'precisão (acertos ÷ tiros) por latência de percepção' },
   ));
   destino.append(c3);
 
+  if (Object.keys(r.politicas).length < 2) return;
   const yMax = Math.ceil(Math.max(...Object.values(r.politicas).flatMap((d) => Object.values(d).flat().map((p) => p.abates_por_minuto))) / 10) * 10;
   const c4 = card('Aves abatidas por minuto, com antecipação',
     'O mesmo agente com três "olhos": as caixas reais do jogo (teto), o detector treinado no jogo e o detector COCO tratando bird/kite como alvo.');
